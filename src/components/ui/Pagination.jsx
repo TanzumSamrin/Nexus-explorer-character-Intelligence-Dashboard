@@ -1,43 +1,108 @@
-import Button from "./Button";
+import { useQueryClient } from "@tanstack/react-query";
+
+import {
+  fetchCharacters,
+} from "../../api/characterQueries";
 
 function Pagination({
   page,
   totalPages,
-  onPrevious,
-  onNext,
-  previousDisabled = false,
-  nextDisabled = false,
+  filters,
+  onPageChange,
+  isFetching,
 }) {
+  const queryClient = useQueryClient();
+
+  const isFirstPage = page === 1;
+  const isLastPage =
+    page === totalPages;
+
+  function buildQueryParams(
+    targetPage
+  ) {
+    return {
+      page: targetPage,
+      name: filters.name,
+      status: filters.status,
+      species: filters.species,
+      gender: filters.gender,
+    };
+  }
+
+  function prefetchPage(targetPage) {
+    if (
+      targetPage < 1 ||
+      targetPage > totalPages
+    ) {
+      return;
+    }
+
+    const params =
+      buildQueryParams(targetPage);
+
+    queryClient.prefetchQuery({
+      queryKey: [
+        "characters",
+        params,
+      ],
+
+      queryFn: () =>
+        fetchCharacters(params),
+    });
+  }
+
+  function handlePreviousHover() {
+    prefetchPage(page - 1);
+  }
+
+  function handleNextHover() {
+    prefetchPage(page + 1);
+  }
+
+  function handlePreviousClick() {
+    if (!isFirstPage) {
+      onPageChange(page - 1);
+    }
+  }
+
+  function handleNextClick() {
+    if (!isLastPage) {
+      onPageChange(page + 1);
+    }
+  }
+
   return (
-    <nav
-      className="ui-pagination"
-      aria-label="Pagination"
-    >
-      <Button
-        variant="secondary"
-        size="small"
-        disabled={previousDisabled || page <= 1}
-        onClick={onPrevious}
+    <div className="pagination">
+      <button
+        type="button"
+        disabled={
+          isFirstPage || isFetching
+        }
+        onClick={handlePreviousClick}
+        onMouseEnter={
+          handlePreviousHover
+        }
       >
         ← Prev
-      </Button>
+      </button>
 
-      <span className="ui-pagination__status">
+      <span>
         Page {page} of {totalPages}
       </span>
 
-      <Button
-        variant="secondary"
-        size="small"
+      <button
+        type="button"
         disabled={
-          nextDisabled ||
-          page >= totalPages
+          isLastPage || isFetching
         }
-        onClick={onNext}
+        onClick={handleNextClick}
+        onMouseEnter={
+          handleNextHover
+        }
       >
         Next →
-      </Button>
-    </nav>
+      </button>
+    </div>
   );
 }
 

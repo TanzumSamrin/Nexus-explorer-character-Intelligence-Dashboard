@@ -1,3 +1,6 @@
+import ThemeToggle from "../ui/ThemeToggle";
+
+
 function Topbar() {
   return (
     <header className="topbar">
@@ -7,6 +10,9 @@ function Topbar() {
       </div>
 
       <div className="topbar-actions">
+        <ThemeToggle />
+        {}
+      
         <button type="button" className="topbar-button">
           Search
         </button>

@@ -1,15 +1,18 @@
-export async function getJson(url, options = {}) {
-  const response = await fetch(url, options);
+export async function getJson(url) {
+  const response = await fetch(url);
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => null);
-
     const error = new Error(
-      errorData?.error || `Request failed with status ${response.status}`
+      `Request failed with status ${response.status}`
     );
 
     error.status = response.status;
-    error.data = errorData;
+
+    try {
+      error.data = await response.json();
+    } catch {
+      error.data = null;
+    }
 
     throw error;
   }

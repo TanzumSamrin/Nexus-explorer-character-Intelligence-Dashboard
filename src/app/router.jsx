@@ -17,6 +17,9 @@ import ComparePage from "../pages/ComparePage";
 import SettingsPage from "../pages/SettingsPage";
 import NotFoundPage from "../pages/NotFoundPage";
 
+
+
+
 function AppRoutes() {
   return (
     <Routes>
