@@ -8,12 +8,13 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
-import useCharacters from "../hooks/useCharacters";
-
 import CharacterCard from "../components/characters/CharacterCard";
 import Pagination from "../components/ui/Pagination";
 
 import ErrorBoundary from "../components/error/ErrorBoundary";
+
+import useCharacters from "../hooks/useCharacters";
+import useExpensiveCache from "../hooks/useExpensiveCache";
 
 
 const STATUS_OPTIONS = [
@@ -269,6 +270,63 @@ function CharacterListPage() {
   const totalPages =
     data?.info?.pages || 1;
 
+  /*
+   * [REQ-3] Cache the expensive derived
+   * character grouping/sorting operation.
+   *
+   * The computation groups the current
+   * character dataset by species and sorts
+   * every group alphabetically.
+   */
+  const {
+    value: groupedCharacters,
+    hits: cacheHits,
+    misses: cacheMisses,
+    cacheSize,
+  } = useExpensiveCache(
+    characters,
+    (items) => {
+      const groups = {};
+
+      items.forEach(
+        (character) => {
+          const species =
+            character.species ||
+            "Unknown";
+
+          if (!groups[species]) {
+            groups[species] = [];
+          }
+
+          groups[species] = [
+            ...groups[species],
+            character,
+          ];
+        }
+      );
+
+      Object.keys(groups).forEach(
+        (species) => {
+          groups[species] = [
+            ...groups[species],
+          ].sort((a, b) =>
+            a.name.localeCompare(
+              b.name
+            )
+          );
+        }
+      );
+
+      return groups;
+    },
+    characters
+      .map(
+        (character) =>
+          character.id
+      )
+      .join(",")
+  );
+
   const hasCachedData =
     Boolean(data);
 
@@ -364,23 +422,44 @@ function CharacterListPage() {
           )}
 
           <div className="results-header">
-            <div>
-              <h2>
-                Results
-              </h2>
+          <div>
+            <h2>
+              Results
+            </h2>
 
-              <p>
-                {data.info.count}{" "}
-                characters
-              </p>
-            </div>
-
-            {isFetching && (
-              <span className="refetching-badge">
-                Refetching…
-              </span>
-            )}
+            <p>
+              {data.info.count}{" "}
+              characters
+            </p>
           </div>
+
+          <div className="cache-debug-panel">
+            <span>
+              Cache hits: {cacheHits}
+            </span>
+
+            <span>
+              Cache misses: {cacheMisses}
+            </span>
+
+            <span>
+              Cached keys: {cacheSize}
+            </span>
+
+            <span>
+              Species groups:{" "}
+              {Object.keys(
+                groupedCharacters
+              ).length}
+            </span>
+          </div>
+
+          {isFetching && (
+            <span className="refetching-badge">
+              Refetching…
+            </span>
+          )}
+        </div>
 
           {/* 
             [REQ-22]
