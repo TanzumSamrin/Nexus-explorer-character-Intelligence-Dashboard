@@ -8,7 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 
-import useCharacter from "../hooks/useCharacters";
+import useCharacter from "../hooks/useCharacter";
 import useEpisodes from "../hooks/useEpisodes";
 
 function CharacterDetailPage() {
