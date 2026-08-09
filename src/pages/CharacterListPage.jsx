@@ -8,16 +8,40 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
-import {
-  STATUS_OPTIONS,
-  SPECIES_OPTIONS,
-  GENDER_OPTIONS,
-} from "../api/endpoints";
-
 import useCharacters from "../hooks/useCharacters";
 
 import CharacterCard from "../components/characters/CharacterCard";
 import Pagination from "../components/ui/Pagination";
+
+import ErrorBoundary from "../components/error/ErrorBoundary";
+
+
+const STATUS_OPTIONS = [
+  "Alive",
+  "Dead",
+  "unknown",
+];
+
+const SPECIES_OPTIONS = [
+  "Human",
+  "Alien",
+  "Humanoid",
+  "Animal",
+  "Robot",
+  "Cronenberg",
+  "Mythological Creature",
+  "Disease",
+  "Poopybutthole",
+  "Unknown",
+];
+
+const GENDER_OPTIONS = [
+  "Female",
+  "Male",
+  "Genderless",
+  "unknown",
+];
+
 
 function CharacterListPage() {
   const [
@@ -35,10 +59,13 @@ function CharacterListPage() {
   const filters = {
     name:
       searchParams.get("search") || "",
+
     status:
       searchParams.get("status") || "",
+
     species:
       searchParams.get("species") || "",
+
     gender:
       searchParams.get("gender") || "",
   };
@@ -190,7 +217,10 @@ function CharacterListPage() {
     }
 
     // Changing any filter resets page to 1.
-    nextParams.set("page", "1");
+    nextParams.set(
+      "page",
+      "1"
+    );
 
     setSearchParams(
       nextParams
@@ -232,6 +262,7 @@ function CharacterListPage() {
       nextParams
     );
   }
+
   const characters =
     data?.results || [];
 
@@ -351,16 +382,24 @@ function CharacterListPage() {
             )}
           </div>
 
-          <div className="character-grid">
-            {characters.map(
-              (character) => (
-                <CharacterCard
-                  key={character.id}
-                  character={character}
-                />
-              )
-            )}
-          </div>
+          {/* 
+            [REQ-22]
+            Characters panel has its own ErrorBoundary.
+            If a character card crashes, the entire
+            application should not become blank.
+          */}
+          <ErrorBoundary>
+            <div className="character-grid">
+              {characters.map(
+                (character) => (
+                  <CharacterCard
+                    key={character.id}
+                    character={character}
+                  />
+                )
+              )}
+            </div>
+          </ErrorBoundary>
 
           <Pagination
             page={page}
@@ -376,6 +415,7 @@ function CharacterListPage() {
     </section>
   );
 }
+
 
 function CharacterFilters({
   searchInput,
@@ -430,7 +470,7 @@ function CharacterFilters({
             (status) => (
               <button
                 key={status}
-type="button"
+                type="button"
                 className={
                   filters.status ===
                   status
@@ -509,6 +549,7 @@ type="button"
   );
 }
 
+
 function CharacterSkeletonGrid() {
   return (
     <div className="character-grid">
@@ -520,13 +561,17 @@ function CharacterSkeletonGrid() {
           key={index}
         >
           <div className="skeleton-image" />
+
           <div className="skeleton-line large" />
+
           <div className="skeleton-line" />
+
           <div className="skeleton-line" />
         </div>
       ))}
     </div>
   );
 }
+
 
 export default CharacterListPage;

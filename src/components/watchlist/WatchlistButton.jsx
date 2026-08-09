@@ -1,7 +1,7 @@
 import {
   useWatchlistActions,
   useWatchlistState,
-} from "../../contexts/watchlist/useWatchlist";
+} from "../../context/watchlist/useWatchlist";
 
 function WatchlistButton({
   characterId,

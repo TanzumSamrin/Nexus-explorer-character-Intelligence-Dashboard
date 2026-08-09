@@ -1,6 +1,4 @@
-import {
-  useState
-} from "react";
+import { useState } from "react";
 
 import {
   Link,
@@ -26,6 +24,11 @@ function CharacterDetailPage() {
     setCopied,
   ] = useState(false);
 
+  const [
+  copyError,
+  setCopyError,
+] = useState("");
+
   const {
     data: character,
     isPending,
@@ -48,20 +51,26 @@ function CharacterDetailPage() {
   );
 
   async function handleCopyLink() {
-    try {
-      await navigator.clipboard.writeText(
-        window.location.href
-      );
+  try {
+    setCopyError("");
 
-      setCopied(true);
+    await navigator.clipboard.writeText(
+      window.location.href
+    );
 
-      setTimeout(() => {
-        setCopied(false);
-      }, 1500);
-    } catch {
+    setCopied(true);
+
+    setTimeout(() => {
       setCopied(false);
-    }
+    }, 1500);
+  } catch (error) {
+    setCopied(false);
+
+    setCopyError(
+      "Unable to copy the link. Please copy the URL manually."
+    );
   }
+}
 
   function handleBack() {
     navigate(-1);
@@ -135,24 +144,30 @@ function CharacterDetailPage() {
   return (
     <section className="page">
       <div className="detail-toolbar">
-        <button
-          type="button"
-          className="back-button"
-          onClick={handleBack}
-        >
-          ← Back
-        </button>
+  <button
+    type="button"
+    className="back-button"
+    onClick={handleBack}
+  >
+    ← Back
+  </button>
 
-        <button
-          type="button"
-          className="copy-link-button"
-          onClick={handleCopyLink}
-        >
-          {copied
-            ? "Copied!"
-            : "Copy link"}
-        </button>
-      </div>
+  <button
+    type="button"
+    className="copy-link-button"
+    onClick={handleCopyLink}
+  >
+    {copied
+      ? "Copied!"
+      : "Copy link"}
+  </button>
+
+  {copyError && (
+    <p className="inline-error">
+      {copyError}
+    </p>
+  )}
+</div>
 
       <article className="character-detail">
         <div className="character-detail-image">
@@ -172,6 +187,13 @@ function CharacterDetailPage() {
               <p className="character-detail-subtitle">
                 {character.species}
               </p>
+
+              {/* Watchlist Button */}
+              <WatchlistButton
+                characterId={
+                  character.id
+                }
+              />
             </div>
 
             <StatusBadge
@@ -209,7 +231,7 @@ function CharacterDetailPage() {
                 character.location?.name
               }
             />
-</div>
+          </div>
 
           <div className="character-detail-links">
             {character.origin
@@ -225,6 +247,7 @@ function CharacterDetailPage() {
                 View origin
               </a>
             )}
+
             {character.location
               ?.url && (
               <a

@@ -1,23 +1,33 @@
 import ThemeToggle from "../ui/ThemeToggle";
-
+import CrashTest from "../error/CrashTest";
 
 function Topbar() {
   return (
     <header className="topbar">
-      <div>
-        <p className="topbar-label">Nexus Explorer</p>
-        <h2>Character Intelligence Dashboard</h2>
+      <div className="topbar-brand">
+        <h1>Nexus Explorer</h1>
+
+        <p>
+          Character Intelligence Dashboard
+        </p>
       </div>
 
       <div className="topbar-actions">
         <ThemeToggle />
-        {}
-      
-        <button type="button" className="topbar-button">
+
+        <CrashTest />
+
+        <button
+          type="button"
+          className="topbar-button"
+        >
           Search
         </button>
 
-        <button type="button" className="topbar-button">
+        <button
+          type="button"
+          className="topbar-button"
+        >
           Theme
         </button>
       </div>

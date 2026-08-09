@@ -15,7 +15,7 @@ export function useWatchlistState() {
 
   if (!context) {
     throw new Error(
-      "useWatchlistState must be used inside WatchlistProvider"
+      "useWatchlistState must be used inside WatchlistProvider."
     );
   }
 
@@ -30,7 +30,7 @@ export function useWatchlistActions() {
 
   if (!context) {
     throw new Error(
-      "useWatchlistActions must be used inside WatchlistProvider"
+      "useWatchlistActions must be used inside WatchlistProvider."
     );
   }
 

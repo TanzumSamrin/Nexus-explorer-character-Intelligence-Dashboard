@@ -12,7 +12,7 @@ import {
 
 import {
   useWatchlist,
-} from "../contexts/watchlist/useWatchlist";
+} from "../context/watchlist/useWatchlist";
 
 import CharacterCard from "../components/characters/CharacterCard";
 
@@ -38,6 +38,7 @@ function WatchlistPage() {
       "watchlist",
       uniqueIds,
     ],
+
     queryFn: async () => {
       if (
         uniqueIds.length === 0
@@ -67,6 +68,7 @@ function WatchlistPage() {
         ? result
         : [result];
     },
+
     enabled:
       uniqueIds.length > 0,
   });
@@ -110,6 +112,10 @@ function WatchlistPage() {
             <h1>
               Watchlist
             </h1>
+
+            <p>
+              Your saved characters
+            </p>
           </div>
         </header>
 
@@ -163,7 +169,7 @@ function WatchlistPage() {
           </h1>
 
           <p>
-            {data?.length || 0} saved
+            {data?.length || 0} saved{" "}
             character
             {data?.length === 1
               ? ""
