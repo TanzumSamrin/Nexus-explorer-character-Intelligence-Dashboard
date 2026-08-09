@@ -2,6 +2,8 @@ import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
+import WatchlistButton from "../watchlist/WatchlistButton";
+
 import {
   fetchCharacter,
 } from "../../api/characterQueries";
@@ -76,6 +78,13 @@ function CharacterCard({ character }) {
           <strong>Location:</strong>{" "}
           {character.location?.name}
         </p>
+
+        {/* Watchlist Button */}
+        <div className="character-card-watchlist">
+          <WatchlistButton
+            characterId={character.id}
+          />
+        </div>
 
         <Link
           to={`/characters/${character.id}`}

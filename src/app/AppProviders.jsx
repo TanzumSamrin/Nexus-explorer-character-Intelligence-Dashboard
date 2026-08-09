@@ -4,6 +4,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "./queryClient";
 import ThemeProvider from "../context/theme/ThemeProvider";
 
+
+import WatchlistProvider from "../context/watchlist/WatchlistProvider";
+
+
 function AppProviders({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
@@ -19,3 +23,5 @@ function AppProviders({ children }) {
 }
 
 export default AppProviders;
+
+

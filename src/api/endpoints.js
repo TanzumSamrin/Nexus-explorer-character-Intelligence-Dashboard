@@ -58,3 +58,5 @@ export const episodeListUrl = (page = 1) =>
 
 export const locationListUrl = (page = 1) =>
   `${BASE_URL}/location?page=${page}`;
+
+

@@ -11,6 +11,8 @@ import {
 import useCharacter from "../hooks/useCharacter";
 import useEpisodes from "../hooks/useEpisodes";
 
+import WatchlistButton from "../components/watchlist/WatchlistButton";
+
 function CharacterDetailPage() {
   const {
     id,
