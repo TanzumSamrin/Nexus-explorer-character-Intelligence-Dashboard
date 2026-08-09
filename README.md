@@ -1,16 +1,66 @@
-# React + Vite
+# Nexus Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Nexus Explorer is a React-based Character Intelligence Dashboard built with React, React Router, TanStack React Query and the Rick and Morty API.
 
-Currently, two official plugins are available:
+The application allows users to explore characters, view character details, browse episodes and locations, maintain a persistent watchlist, compare characters, switch between light and dark themes, and observe React Query caching and context-performance behaviour.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Dashboard with data-driven statistics
+- Character search and filtering
+- Character pagination
+- Character detail pages
+- Episode listing
+- Location listing
+- Persistent watchlist using Context API and localStorage
+- Character comparison using URL query parameters
+- Light / dark theme
+- React Query caching and background refetching
+- Query prefetching
+- Loading, error and empty states
+- Retry actions
+- Error Boundary with fallback UI
+- Global error logging
+- Crash Test button for Error Boundary verification
+- Render-count demonstration for Context performance
+- Expensive computation cache using useRef
+- BrowserRouter and HashRouter support
+- React Query Devtools
+- Responsive dashboard layout
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Tech Stack
+
+- React
+- Vite
+- React Router
+- TanStack React Query
+- JavaScript
+- CSS
+- Rick and Morty API
+- ESLint / Oxlint
+- Git and GitHub
+
+---
+
+## API
+
+This project uses the Rick and Morty API.
+
+Base API:
+
+https://rickandmortyapi.com/api
+
+No local seed data is required. Data is loaded from the live API.
+
+---
+
+# Setup Instructions
+
+## 1. Clone the repository
+
+```bash
+git clone <YOUR_GITHUB_REPOSITORY_URL>
